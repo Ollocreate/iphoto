@@ -14,10 +14,11 @@ async function loadImageFromURL(url) {
             canvas.width = img.width;
             canvas.height = img.height;
             const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, img.width, img.height);
-            ctx.drawImage(img, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.classList.add('main-canvas');
 
-            const container = document.querySelector('.d-grid.justify-content-center');
+            const container = document.querySelector('.image-canvas');
             container.innerHTML = '';
             container.appendChild(canvas);
 
@@ -29,6 +30,11 @@ async function loadImageFromURL(url) {
             thumbnailCtx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height);
 
             $('#importModal').modal('hide');
+            showCoordinatesInSidebar();
+            showColorInSidebar();
+
+            const canvasSize = `${canvas.width}x${canvas.height}`;
+            document.querySelector('.img-size').textContent = `Размеры: ${canvasSize}`;
         };
     } catch (error) {
         console.error(error);
@@ -53,10 +59,11 @@ document.getElementById('importForm').addEventListener('submit', function(event)
                     canvas.width = img.width;
                     canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, img.width, img.height);
-                    ctx.drawImage(img, 0, 0);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.classList.add('main-canvas');
         
-                    const container = document.querySelector('.d-grid.justify-content-center');
+                    const container = document.querySelector('.image-canvas');
                     container.innerHTML = '';
                     container.appendChild(canvas);
 
@@ -70,6 +77,11 @@ document.getElementById('importForm').addEventListener('submit', function(event)
                     thumbnailCtx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height);
 
                     $('#importModal').modal('hide');
+                    showCoordinatesInSidebar();
+                    showColorInSidebar();
+
+                    const canvasSize = `${canvas.width}x${canvas.height}`;
+                    document.querySelector('.img-size').textContent = `Размеры: ${canvasSize}`;
                 };
             };
             reader.readAsDataURL(file);
@@ -78,3 +90,48 @@ document.getElementById('importForm').addEventListener('submit', function(event)
 
     document.getElementById('importForm').reset();
 })
+
+function showCoordinatesInSidebar() {
+    const canvas = document.querySelector('.main-canvas');
+    const sidebar = document.querySelector('.img-coordinates');
+
+    canvas.addEventListener('mousemove', function(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor(event.clientX - rect.left);
+        const y = Math.floor(event.clientY - rect.top);
+        
+        sidebar.innerHTML = `X: ${x}, Y: ${y}`;
+    });
+}
+
+function getColorAtPixel(canvas, x, y) {
+    const ctx = canvas.getContext('2d');
+    const pixelData = ctx.getImageData(x, y, 1, 1).data;
+    return `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
+}
+
+function showColorInSidebar() {
+    const canvas = document.querySelector('.main-canvas');
+    const sidebar = document.querySelector('.img-color');
+
+    canvas.addEventListener('click', function(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor(event.clientX - rect.left);
+        const y = Math.floor(event.clientY - rect.top);
+        const color = getColorAtPixel(canvas, x, y);
+        
+        const rectangleCanvas = document.createElement('canvas');
+        rectangleCanvas.width = 100;
+        rectangleCanvas.height = 50;
+        const rectCtx = rectangleCanvas.getContext('2d');
+        rectCtx.fillStyle = color;
+        rectCtx.fillRect(0, 0, 100, 50);
+
+        const colorCode = document.createElement('div');
+        colorCode.textContent = color;
+        sidebar.innerHTML = '';
+        sidebar.appendChild(colorCode);
+        sidebar.appendChild(rectangleCanvas);
+        
+    });
+}

@@ -1,0 +1,32 @@
+.img-canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.main-canvas {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.sidebar {
+    border-left: 2px solid #000;
+}
+
+#thumbnailCanvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+li {
+    list-style: none;
+}
