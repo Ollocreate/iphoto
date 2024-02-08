@@ -1,3 +1,30 @@
+document.getElementById('importForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const url = document.getElementById('urlInput').value.trim();
+    if (url) {
+        loadImageFromURL(url);
+    } else {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    renderCanvas(img);
+                    $('#importModal').modal('hide');
+                    showCoordinatesInSidebar();
+                    showColorInSidebar();
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    document.getElementById('importForm').reset();
+});
+
 async function loadImageFromURL(url) {
     try {
         const response = await fetch(url);
@@ -43,33 +70,6 @@ function renderCanvas(img) {
     const canvasSize = `${canvas.width}x${canvas.height}`;
     document.querySelector('.img-size').textContent = `Размеры: ${canvasSize}`;
 }
-
-document.getElementById('importForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const url = document.getElementById('urlInput').value.trim();
-    if (url) {
-        loadImageFromURL(url);
-    } else {
-        const fileInput = document.getElementById('fileInput');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    renderCanvas(img);
-                    $('#importModal').modal('hide');
-                    showCoordinatesInSidebar();
-                    showColorInSidebar();
-                };
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    document.getElementById('importForm').reset();
-});
 
 function showCoordinatesInSidebar() {
     const canvas = document.querySelector('.main-canvas');
