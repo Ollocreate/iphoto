@@ -1,11 +1,11 @@
-.img-canvas {
+.image-canvas {
     max-width: 100%;
-    height: auto;
+    height: 92vh; 
+    overflow: auto;
 }
 
-.main-canvas {
-    max-height: 100%;
-    object-fit: contain;
+body {
+    overflow: hidden; 
 }
 
 .sidebar {
