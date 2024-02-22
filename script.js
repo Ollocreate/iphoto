@@ -104,18 +104,19 @@ function showColorInSidebar() {
         const colorCode = createColorCodeElement(color);
 
         sidebar.innerHTML = '';
-        sidebar.appendChild(colorCode);
         sidebar.appendChild(rectangleCanvas);
+        sidebar.appendChild(colorCode);
     });
 }
 
 function createColorRectangle(color) {
     const rectangleCanvas = document.createElement('canvas');
-    rectangleCanvas.width = 100;
-    rectangleCanvas.height = 50;
+    rectangleCanvas.width = 20;
+    rectangleCanvas.height = 20;
+    rectangleCanvas.classList.add('color-mini')
     const rectCtx = rectangleCanvas.getContext('2d');
     rectCtx.fillStyle = color;
-    rectCtx.fillRect(0, 0, 100, 50);
+    rectCtx.fillRect(0, 0, 20, 20);
     return rectangleCanvas;
 }
 
