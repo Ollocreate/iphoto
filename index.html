@@ -23,7 +23,14 @@
           </ul>
         </div>
         <button type="button" class="btn btn-light">Редактировать</button>
-        <button type="button" class="btn btn-light">Изображение</button>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Изображение
+          </button>
+          <ul class="dropdown-menu">
+            <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#importModal">Изменить размер</button></li>
+          </ul>
+        </div>
         <button type="button" class="btn btn-light">Слои</button>
         <button type="button" class="btn btn-light">Фильтры</button>
       </div>
@@ -42,6 +49,17 @@
           <li class="img-size"></li>
           <li class="img-coordinates"></li>
           <li class="img-color"></li>
+          <select id="scaleSelect">
+              <option value="0.12">12%</option>
+              <option value="0.25">25%</option>
+              <option value="0.5">50%</option>
+              <option value="0.75">75%</option>
+              <option value="1">100%</option>
+              <option value="1.5">150%</option>
+              <option value="2">200%</option>
+              <option value="3">300%</option>
+          </select>
+        </div>
         </div>
       </div>
     </div>
